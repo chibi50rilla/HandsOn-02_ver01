@@ -1,5 +1,5 @@
-学習用です。
-ハンズオンでTODOアプリ (Spring Boot)を作りました。
+# 学習用です。
+# ハンズオンでTODOアプリ (Spring Boot)を作りました。
 
 1. 学習目的
 - Webアプリケーションの基礎を理解する
@@ -39,31 +39,31 @@
 → application.properties の設定を見直し、H2コンソールで確認
 
 <memo>
-使用ライブラリまとめ (Gradle管理)
-Spring Boot関連
-- spring-boot-starter-web
-→ Webアプリ開発の基本。REST APIやMVCをサポート
-- spring-boot-starter-thymeleaf
-→ サーバーサイドテンプレートエンジン。HTMLと連携してビューを生成
-- spring-boot-starter-validation
-→ 入力チェックやバリデーション機能を提供
-- spring-boot-devtools
-→ 開発効率化のためのホットリロードなど
-データアクセス
-- MyBatis Spring Boot Starter
-→ SQLベースのO/Rマッパー。Spring Bootと統合して簡単にDB操作
-- H2 Database
-→ 組み込み型の軽量データベース。学習やテストに便利
-開発支援
-- Lombok
-→ Getter/SetterやBuilderなどを自動生成し、コードを簡潔に
-- spring-boot-starter-test
-→ JUnitやMockMvcなど、テスト用ライブラリをまとめて提供
-フロントエンド
-- Bootstrap (WebJars)
-→ CSSフレームワーク。UIを簡単に整える
-- webjars-locator-core
-→ WebJarsのリソースを簡単に解決できる仕組み
-- Thymeleaf Layout Dialect
-→ Thymeleafでレイアウトを共通化するための拡張
+使用ライブラリまとめ (Gradle管理)</br>
+Spring Boot関連</br>
+- spring-boot-starter-web</br>
+→ Webアプリ開発の基本。REST APIやMVCをサポート</br>
+- spring-boot-starter-thymeleaf</br>
+→ サーバーサイドテンプレートエンジン。HTMLと連携してビューを生成</br>
+- spring-boot-starter-validation</br>
+→ 入力チェックやバリデーション機能を提供</br>
+- spring-boot-devtools</br>
+→ 開発効率化のためのホットリロードなど</br>
+データアクセス</br>
+- MyBatis Spring Boot Starter</br>
+→ SQLベースのO/Rマッパー。Spring Bootと統合して簡単にDB操作</br>
+- H2 Database</br>
+→ 組み込み型の軽量データベース。学習やテストに便利</br>
+開発支援</br>
+- Lombok</br>
+→ Getter/SetterやBuilderなどを自動生成し、コードを簡潔に</br>
+- spring-boot-starter-test</br>
+→ JUnitやMockMvcなど、テスト用ライブラリをまとめて提供</br>
+フロントエンド</br>
+- Bootstrap (WebJars)</br>
+→ CSSフレームワーク。UIを簡単に整える</br>
+- webjars-locator-core</br>
+→ WebJarsのリソースを簡単に解決できる仕組み</br>
+- Thymeleaf Layout Dialect</br>
+→ Thymeleafでレイアウトを共通化するための拡張</br>
 
