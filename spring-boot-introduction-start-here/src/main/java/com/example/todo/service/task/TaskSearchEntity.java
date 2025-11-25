@@ -1,4 +1,9 @@
 package com.example.todo.service.task;
 
-public class TaskSearchEntity {
+import java.util.List;
+
+public record TaskSearchEntity(
+        String summary,
+        List<TaskStatus> status
+) {
 }
