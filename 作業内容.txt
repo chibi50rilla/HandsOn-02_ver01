@@ -1,0 +1,27 @@
+🌟 今日やったことまとめ（Nozomiさんの進捗ログ）
+🗂 1. Supabase に tasks テーブルを作成
+- id / summary / description / status の4つのカラムを持つテーブルを作成
+- SQL の構文エラーを修正しながら、正しく作成完了
+- 既存テーブルの削除 → 再作成も経験して理解が深まった
+
+🔌 2. Supabase の接続 URL を理解
+- 通常接続（IPv6）と Session Pooler（IPv4）の違いを理解
+- EC2 からは Session Pooler を使う必要があることを確認
+- 正しい接続 URL を抽出し、Spring Boot 用に変換
+
+⚙️ 3. Spring Boot の DB 設定を Supabase 用に書き換え
+- application.properties を PostgreSQL 用に変更
+- H2 の設定を削除して、Supabase に完全移行
+- ddl-auto=none で安全に運用できる形に整備
+
+📦 4. PostgreSQL JDBC ドライバを追加
+- Tomcat 起動エラーの原因を特定
+- org.postgresql.Driver が無いことを発見
+- Maven/Gradle に PostgreSQL 依存を追加して解決
+- アプリが正常起動するところまで確認
+
+📝 5. 一日限定 Todo のアイデアを整理
+- 「24時間で自動削除される Todo」構想を検討
+- Supabase 側で自動削除する方法
+- Spring Boot 側で削除する方法
+- どちらも安全に実装できる方向性を確認
