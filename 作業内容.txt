@@ -58,3 +58,52 @@ todo-0.0.1-SNAPSHOT.jar を確認
 - アプリ画面の表示を確認
 - クラウド公開成功！
 
+これまでの作業内容まとめ
+1. Supabase に Edge Function を作成
+- 名前：delete-old-tasks
+- 内容：
+tasks テーブルから 今日より前の日付のタスクを削除する処理を実装
+- 動作確認：Supabase の Function Logs でテスト実行して成功
+
+2. Supabase の API キーと URL を確認
+- anon public key を取得
+- 関数のエンドポイント URL を確認
+例：
+https://xxxx.supabase.co/functions/v1/delete-old-tasks
+
+3. GitHub Secrets に必要な値を登録
+GitHub → Settings → Secrets → Actions に以下を追加：
+|  |  | 
+| SUPABASE_FUNCTION_URL |  | 
+| SUPABASE_ANON_KEY |  | 
+
+
+
+4. GitHub Actions の workflow を作成
+.github/workflows/delete-old-tasks.yml を作成し push：
+- 毎日 0:00（日本時間）に実行される cron 設定
+- Supabase 関数を curl で叩く処理を記述
+- workflow_dispatch: で手動実行も可能に
+
+5. GitHub Actions が動かずエラー → 修正
+- exit code 3（URL 形式エラー）
+- 原因：Secrets の URL が誤っていた
+- 修正後、GitHub Actions が正常に実行されるようになった
+
+6. Supabase にテストデータを挿入
+- tasks テーブルの構造に合わせて
+summary / description / status / created_at を持つ10件のデータを挿入
+- すべて今日の日付に統一したデータも挿入
+
+7. 自動削除の動作仕様を確認
+- 削除条件：
+created_at < 今日の日付
+- 今日の日付のデータは削除されない
+- 古いデータを入れれば、夜0時に自動削除される
+
+🌟 今の状態でできること
+- 毎日0時に GitHub Actions が自動実行
+- Supabase の関数が呼ばれ、古いタスクだけ削除
+- Supabase のログで実行履歴を確認可能
+- アプリのメンテナンスが自動化されている状態
+
