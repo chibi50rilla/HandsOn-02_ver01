@@ -10,9 +10,31 @@
 <body>
 <section layout:fragment="content">
     <div class="text-center">
-        <h1 class="h1">タスク管理のお手伝いをします</h1>
-        <p>タスク一覧から始めてください！</p>
+        <h1 class="h1">今日だけのTodoリスト</h1>
+        <p id="remaining-time" class="mt-2"></p>
+        <p><a href="/tasks">タスク一覧へ</a></p>
     </div>
+
+    <script>
+        function updateRemainingTime() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(24, 0, 0, 0);
+
+            const diffMs = endOfDay - now;
+
+            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+            document.getElementById("remaining-time").textContent =
+                `今日の残り時間：${hours}時間${minutes}分${seconds}秒`;
+        }
+
+        updateRemainingTime();
+        setInterval(updateRemainingTime, 1000); // 毎秒更新
+    </script>
+
 </section>
 </body>
 </html>

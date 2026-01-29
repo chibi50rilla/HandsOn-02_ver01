@@ -9,6 +9,7 @@
 </head>
 <body>
 <section layout:fragment="content">
+    <p id="remaining-time" class="mt-2"></p>
     <div>
         <a th:href="@{/tasks/creationForm}" class="btn btn-primary">作成</a>
     </div>
@@ -59,7 +60,25 @@
             </tbody>
         </table>
     </div>
-</section>
+    <script>
+        function updateRemainingTime() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(24, 0, 0, 0);
 
+            const diffMs = endOfDay - now;
+
+            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+            document.getElementById("remaining-time").textContent =
+                `今日の残り時間：${hours}時間${minutes}分${seconds}秒`;
+        }
+
+        updateRemainingTime();
+        setInterval(updateRemainingTime, 1000); // 毎秒更新
+    </script>
+</section>
 </body>
 </html>

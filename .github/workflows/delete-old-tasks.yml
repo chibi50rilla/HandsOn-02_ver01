@@ -1,0 +1,17 @@
+name: Delete old tasks daily
+
+on:
+  schedule:
+    - cron: "0 15 * * *"   # 日本時間0時（UTC15時）
+  workflow_dispatch:
+
+jobs:
+  call-supabase-function:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call delete-old-tasks function
+        run: |
+          curl -L -X POST '${{ secrets.SUPABASE_FUNCTION_URL }}' \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}"
