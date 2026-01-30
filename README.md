@@ -32,3 +32,9 @@
 
 ### GitHub Actions（自動削除ワークフロー）  
   [.github/workflows/delete-tasks.yml](https://github.com/chibi50rilla/HandsOn-02_ver01/blob/main/.github/workflows/delete-old-tasks.yml)
+
+ ## 画面キャプチャ
+ 
+<img width="793" height="928" alt="スクリーンショット 2026-01-30 174157" src="https://github.com/user-attachments/assets/c9d380ad-3185-4408-b8b6-f7892bd6a137" />
+<img width="763" height="918" alt="スクリーンショット 2026-01-30 174225" src="https://github.com/user-attachments/assets/082116e7-6135-404d-bd58-d89bbfe892d0" />
+
