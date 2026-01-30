@@ -52,9 +52,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="task : ${taskList}" th:object="${task}">
-                <td><a th:href="@{/tasks/{id}(id=*{id})}" th:text="'#' + *{id}"></a></td>
-                <td><a th:href="@{/tasks/{id}(id=*{id})}" th:text="*{summary}"></a></td>
+            <tr th:each="task, stat : ${taskList}" th:object="${task}">
+                <td><a th:href="@{/tasks/{id}(id=*{id}, no=${stat.index + 1})}"th:text="${stat.index + 1}"></a></td>
+                <td><a th:href="@{/tasks/{id}(id=*{id}, no=${stat.index + 1})}"th:text="*{summary}"></a></td>
                 <td th:text="*{status}"></td>
             </tr>
             </tbody>
