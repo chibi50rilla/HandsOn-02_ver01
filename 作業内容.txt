@@ -1,4 +1,4 @@
-🌟 今日やったことまとめ（Nozomiさんの進捗ログ）
+## 2026/01/23まとめ（Nozomiさんの進捗ログ）
 🗂 1. Supabase に tasks テーブルを作成
 - id / summary / description / status の4つのカラムを持つテーブルを作成
 - SQL の構文エラーを修正しながら、正しく作成完了
@@ -26,7 +26,7 @@
 - Spring Boot 側で削除する方法
 - どちらも安全に実装できる方向性を確認
 
-📘 今日の作業内容まとめ
+## 2026/01/25まとめ
 1. EC2 インスタンスの作成
 - 新しい EC2 インスタンスを起動
 - セキュリティグループを一度削除し、重複バグを回避
@@ -58,7 +58,7 @@ todo-0.0.1-SNAPSHOT.jar を確認
 - アプリ画面の表示を確認
 - クラウド公開成功！
 
-これまでの作業内容まとめ
+2025/01/27作業内容まとめ
 1. Supabase に Edge Function を作成
 - 名前：delete-old-tasks
 - 内容：
@@ -101,9 +101,54 @@ created_at < 今日の日付
 - 今日の日付のデータは削除されない
 - 古いデータを入れれば、夜0時に自動削除される
 
-🌟 今の状態でできること
-- 毎日0時に GitHub Actions が自動実行
-- Supabase の関数が呼ばれ、古いタスクだけ削除
-- Supabase のログで実行履歴を確認可能
-- アプリのメンテナンスが自動化されている状態
+2026/01/30まとめ（完全版）
+1. Spring Boot アプリの HTML を修正
+- IntelliJ でテンプレート（Thymeleaf）を編集
+- 表示内容を変更したが、EC2 では反映されず
+→ 原因調査へ
+
+2. Jar を再ビルドしようとして PowerShell の実行方法を修正
+- gradlew.bat build が動かず
+- PowerShell の仕様で .\gradlew.bat build が必要と判明
+- 正しくビルドできた（BUILD SUCCESSFUL）
+
+3. 新しい jar を EC2 にアップロード
+- scp コマンドで最新 jar を上書きアップロード
+- 転送成功（39MB）
+
+4. systemd の再起動を試みるが、Windows で sudo を実行してしまう
+- PowerShell で sudo を実行 → エラー
+- 正しくは EC2 に SSH 接続してから sudo を使う と理解
+
+5. EC2 でサービス再起動 → 起動失敗
+- sudo systemctl restart todo
+- status を確認すると ClassNotFoundException が発生
+
+6. ログ解析で原因を特定
+エラー内容：
+ClassNotFoundException: org.springframework.boot.web.server.GracefulShutdownCallback
+
+
+→ Spring Boot 3 では削除されたクラス
+→ プロジェクト内には使っていない
+→ 依存ライブラリのどれかが Spring Boot 2.x の API を参照していると判明
+
+7. build.gradle を確認 → 問題の依存を発見
+原因の依存：
+webjars-locator-core:0.52
+
+
+これは Spring Boot 2.x 時代のライブラリで、
+内部で削除済み API を参照していた。
+
+8. 問題の依存を削除して clean build
+- build.gradle から webjars-locator-core を削除
+- .\gradlew.bat clean build で完全再ビルド
+- 新しい jar を再アップロード
+
+9. EC2 でサービス再起動 → 成功
+- sudo systemctl restart todo
+- sudo systemctl status todo
+→ active (running) に復帰
+→ アプリが正常起動
 
