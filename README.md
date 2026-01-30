@@ -24,3 +24,16 @@ GitHub Actions で自動実行
 - DB の ID（UUID や主キー）ではなく、
 画面上では 1, 2, 3… の連番で表示
 - ユーザーにとって見やすく、操作しやすい UI に改善
+
+## 追加機能（URL）
+
+### 公開アプリURL  
+  [ToDoリストアプリ](http://43.206.147.251:8080)
+
+### Supabase（DB管理）  
+  [Supabase API URL](https://vcagtgmiyzootvxqfnhb.supabase.co)
+
+
+### GitHub Actions（自動削除ワークフロー）  
+  [.github/workflows/delete-tasks.yml](./.github/workflows/delete-tasks.yml)
+
