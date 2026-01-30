@@ -35,5 +35,4 @@ GitHub Actions で自動実行
 
 
 ### GitHub Actions（自動削除ワークフロー）  
-  [.github/workflows/delete-tasks.yml](./.github/workflows/delete-tasks.yml)
-
+  [.github/workflows/delete-tasks.yml]([./.github/workflows/delete-tasks.yml](https://github.com/chibi50rilla/HandsOn-02_ver01/blob/main/.github/workflows/delete-old-tasks.yml))
