@@ -1,68 +1,26 @@
-# 学習用です。</br>ハンズオンでTODOアプリ (Spring Boot)を作りました。
+# ↓こちらのハンズオンアプリに少し機能を付け加えました
+[学習用です。ハンズオンでTODOアプリ (Spring Boot)を作りました。](https://github.com/chibi50rilla/HandsOn-02)
 
-## 1. 学習目的
-- Webアプリケーションの基礎を理解する
-- Spring Bootを使ったCRUD処理の流れを体験する
-- Thymeleaf + BootstrapでUIを整える
+## 追加機能（今回新たに実装した内容）
+### ■ 1日限定のタスクリスト
+- 登録されたタスクは 当日中のみ有効
+- 日付が変わると自動的に削除される
+- 「今日できることだけに集中する」というコンセプトで設計
 
-## 2. 学習内容まとめ
-- CRUD操作
-- Create: フォームからTODOを追加
-- Read: 一覧ページでTODOを表示
-- Update: 編集画面からTODOを更新
-- Delete: 削除ボタンでTODOを削除
-- スタイリング
-- Bootstrapを導入し、フォームやボタンを見やすく整えた
-- データ管理
-- H2 Databaseを利用して簡易的に永続化
+### ■ 一日の残り時間の表示
+- 画面上に 「今日の残り時間」 を表示
+- 1日の終わりが視覚的にわかり、タスク管理の意識が高まる
 
-## 3. 実装の流れ（記録）
-- Spring Initializrでプロジェクト作成
-- Dependencies: Spring Web, Spring Data JPA, H2, Thymeleaf
-- Todoエンティティを作成
-- TodoRepositoryを作成し、JPAでCRUDを実装
-- TodoControllerを作成し、一覧・追加・編集・削除を実装
-- Thymeleafテンプレート (list.html, form.html) を作成
-- Bootstrapを導入してUI改善
+### ■ データベースを H2 → Supabase に変更
+- 開発用の H2 Database から、クラウド DB の Supabase に移行
+- 永続化・外部アクセス・本番運用を意識した構成にアップグレード
 
-## 4. 学んだこと
-- Spring Bootでは、Controller → Service → Repository → Entity の流れが基本
-- ThymeleafはHTMLに近い感覚で書けるので、学習しやすい
-- Bootstrapを使うと、最低限のCSS知識でも見栄えが良くなる
-- CRUDを一通り作ると「Webアプリの基本構造」が理解できる
+### ■ Supabase × GitHub Actions による自動削除
+- 毎日 0 時に Supabase のタスクを削除する SQL を
+GitHub Actions で自動実行
+- サーバー側で cron を使わず、CI/CD で管理できる構成に
 
-## 5. つまずいた点・解決方法
-- エラー: Thymeleafテンプレートが見つからない
-→ src/main/resources/templates 配置を確認
-- エラー: DB接続ができない
-→ application.properties の設定を見直し、H2コンソールで確認
-
-## memo
-使用ライブラリまとめ (Gradle管理)</br>
-Spring Boot関連</br>
-- spring-boot-starter-web</br>
-→ Webアプリ開発の基本。REST APIやMVCをサポート</br>
-- spring-boot-starter-thymeleaf</br>
-→ サーバーサイドテンプレートエンジン。HTMLと連携してビューを生成</br>
-- spring-boot-starter-validation</br>
-→ 入力チェックやバリデーション機能を提供</br>
-- spring-boot-devtools</br>
-→ 開発効率化のためのホットリロードなど</br>
-データアクセス</br>
-- MyBatis Spring Boot Starter</br>
-→ SQLベースのO/Rマッパー。Spring Bootと統合して簡単にDB操作</br>
-- H2 Database</br>
-→ 組み込み型の軽量データベース。学習やテストに便利</br>
-開発支援</br>
-- Lombok</br>
-→ Getter/SetterやBuilderなどを自動生成し、コードを簡潔に</br>
-- spring-boot-starter-test</br>
-→ JUnitやMockMvcなど、テスト用ライブラリをまとめて提供</br>
-フロントエンド</br>
-- Bootstrap (WebJars)</br>
-→ CSSフレームワーク。UIを簡単に整える</br>
-- webjars-locator-core</br>
-→ WebJarsのリソースを簡単に解決できる仕組み</br>
-- Thymeleaf Layout Dialect</br>
-→ Thymeleafでレイアウトを共通化するための拡張</br>
-
+### ■ ID 表示 → 連番表示に変更
+- DB の ID（UUID や主キー）ではなく、
+画面上では 1, 2, 3… の連番で表示
+- ユーザーにとって見やすく、操作しやすい UI に改善
