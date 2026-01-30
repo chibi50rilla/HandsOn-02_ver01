@@ -16,9 +16,9 @@
 - 永続化・外部アクセス・本番運用を意識した構成にアップグレード
 
 ### ■ Supabase × GitHub Actions による自動削除
-- 毎日 0 時に Supabase のタスクを削除する SQL を
-GitHub Actions で自動実行
-- サーバー側で cron を使わず、CI/CD で管理できる構成に
+- Supabase Edge Functions を利用して、前日以前のタスクを自動削除
+- GitHub Actions から Edge Function を定期実行し、毎日 0 時に削除処理を実行
+- サーバー側で cron を使わず、Supabase と CI/CD の組み合わせで運用
 
 ### ■ ID 表示 → 連番表示に変更
 - DB の ID（UUID や主キー）ではなく、
@@ -29,10 +29,6 @@ GitHub Actions で自動実行
 
 ### 公開アプリURL  
   [ToDoリストアプリ](http://43.206.147.251:8080)
-
-### Supabase（DB管理）  
-  [Supabase API URL](https://vcagtgmiyzootvxqfnhb.supabase.co)
-
 
 ### GitHub Actions（自動削除ワークフロー）  
   [.github/workflows/delete-tasks.yml](https://github.com/chibi50rilla/HandsOn-02_ver01/blob/main/.github/workflows/delete-old-tasks.yml)
