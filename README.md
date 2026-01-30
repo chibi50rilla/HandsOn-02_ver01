@@ -25,6 +25,15 @@
 画面上では 1, 2, 3… の連番で表示
 - ユーザーにとって見やすく、操作しやすい UI に改善
 
+### ■ サーバー構成（簡潔版）
+- アプリケーション：Spring Boot（Java）
+- デプロイ先：AWS EC2（Amazon Linux 2023）
+  - systemd による常駐化・自動起動
+- データベース：Supabase（PostgreSQL）
+- 自動削除処理：Supabase Edge Functions + GitHub Actions
+  - 毎日 0 時に古いタスクを削除
+
+
 ## 追加機能（URL）
 
 ### 公開アプリURL  
