@@ -12,7 +12,7 @@ public record TaskForm(
         String summary,
         String description,
         @NotBlank
-        @Pattern(regexp="TODO|DOING|DONE", message = "Todo, Doing, Done のいずれかを選択してください")
+        @Pattern(regexp="Todo|Doing|Done", message = "Todo, Doing, Done のいずれかを選択してください")
         String status
 ) {
     public static TaskForm fromEntity(TaskEntity taskEntity) {

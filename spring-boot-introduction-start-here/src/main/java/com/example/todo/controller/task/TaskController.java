@@ -37,7 +37,8 @@ public class TaskController {
                 .orElseThrow(TaskNotFoundException::new);
 
         model.addAttribute("task", taskDTO);
-        model.addAttribute("no", no); // ← 連番を渡す
+        model.addAttribute("no", no);
+        model.addAttribute("id", taskId);
 
         return "tasks/detail";
     }
@@ -58,29 +59,36 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/editForm")
-    public String showEditForm(@PathVariable("id") long id, Model model) {
+    public String showEditForm(@PathVariable("id") long id,
+                               @RequestParam(value = "no", required = false) Integer no,
+                               Model model) {
         var form = taskService.findById(id)
                 .map(TaskForm::fromEntity)
                 .orElseThrow(TaskNotFoundException::new);
         model.addAttribute("taskForm", form);
         model.addAttribute("mode", "EDIT");
+        model.addAttribute("id", id);
+        model.addAttribute("no", no);
         return "tasks/form";
     }
 
     @PutMapping("{id}") // PUT /tasks/{id}
     public String update(
             @PathVariable("id") long id,
+            @RequestParam(value = "no", required = false) Integer no,
             @Validated @ModelAttribute TaskForm form,
             BindingResult bindingResult,
             Model model
     ) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("mode", "EDIT");
+            model.addAttribute("id", id);
+            model.addAttribute("no", no);
             return "tasks/form";
         }
         var entity = form.toEntity(id);
         taskService.update(entity);
-        return "redirect:/tasks/{id}";
+        return "redirect:/tasks/" + id + "?no=" + no;
     }
 
     // POST /tasks/1 (hidden: _method: delete)
