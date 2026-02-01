@@ -13,7 +13,7 @@
         <form th:action="${mode == 'CREATE'} ? @{/tasks} : @{/tasks/{id}(id=${id})}"
               th:method="post"
               th:object="${taskForm}">
-            
+
             <input type="hidden" name="no" th:value="${no}">
             <div th:if="${mode == 'EDIT'}">
                 <input type="hidden" name="_method" value="PUT">
