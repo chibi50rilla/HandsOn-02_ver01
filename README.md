@@ -1,49 +1,91 @@
-# ↓こちらのハンズオンアプリに少し機能を付け加えました
-[学習用です。ハンズオンでTODOアプリ (Spring Boot)を作りました。](https://github.com/chibi50rilla/HandsOn-02)
+# 1日限定のTODOリストアプリ (Spring Boot)
 
-## 追加機能（今回新たに実装した内容）
+「今日できることだけに集中する」をコンセプトに設計した、当日中のみ有効なタスク管理 Web アプリケーションです。
+日付が変わるとタスクが自動で初期化され、毎日リフレッシュした状態でタスク管理を行えます。
+
+---
+
+## 🌟 主な機能・特徴
+
 ### ■ 1日限定のタスクリスト
-- 登録されたタスクは 当日中のみ有効
-- 日付が変わると自動的に削除される
-- 「今日できることだけに集中する」というコンセプトで設計
+- 登録されたタスクは当日中のみ有効
+- 日本時間の毎日深夜 0 時に自動リセット
+- 「今日やること」に集中するためのシンプルな設計
 
-### ■ 一日の残り時間の表示
-- 画面上に 「今日の残り時間」 を表示
-- 1日の終わりが視覚的にわかり、タスク管理の意識が高まる
+### ■ 一日の残り時間の可視化
+- 画面上部に「今日の残り時間（時・分・秒）」をリアルタイム表示
+- 1日の終わりを意識し、タスクの消化ペースを高める仕様
 
-### ■ データベースを H2 → Supabase に変更
-- 開発用の H2 Database から、クラウド DB の Supabase に移行
-- 永続化・外部アクセス・本番運用を意識した構成にアップグレード
+### ■ 連番による直感的な表示
+- データベース内部の ID ではなく、画面上では `1, 2, 3…` の連番で整理
+- 直感的で視認性の高い UI を実現
 
-### ■ Supabase × GitHub Actions による自動削除
-- Supabase Edge Functions を利用して、前日以前のタスクを自動削除
-- GitHub Actions から Edge Function を定期実行し、毎日 0 時に削除処理を実行
-- サーバー側で cron を使わず、Supabase と CI/CD の組み合わせで運用
+### ■ タスクのステータス管理
+- `Todo` / `Doing` / `Done` のステータス切り替え
+- ステータスやキーワードによる検索・絞り込み機能
 
-### ■ ID 表示 → 連番表示に変更
-- DB の ID（UUID や主キー）ではなく、
-画面上では 1, 2, 3… の連番で表示
-- ユーザーにとって見やすく、操作しやすい UI に改善
+---
 
-### ■ サーバー構成（簡潔版）
-- アプリケーション：Spring Boot（Java）
-- デプロイ先：AWS EC2（Amazon Linux 2023）
-  - systemd による常駐化・自動起動
-- データベース：Supabase（PostgreSQL）
-- 自動削除処理：Supabase Edge Functions + GitHub Actions
-  - 毎日 0 時に古いタスクを削除
+## 🛠 技術スタック・インフラ構成
 
+| 区分 | 採用技術 |
+| :--- | :--- |
+| **バックエンド** | Java 17 / Spring Boot 3.1.2 |
+| **ORM / マッパー** | MyBatis 3.5 |
+| **ビルドツール** | Gradle |
+| **データベース** | H2 Database（ファイルベース永続化） |
+| **フロントエンド** | HTML5 / Thymeleaf / Bootstrap / JavaScript |
+| **インフラ** | AWS Lightsail (Ubuntu 22.04 LTS) |
+| **Web サーバー / リバースプロキシ** | Nginx |
+| **SSL / TLS** | Let's Encrypt (Certbot) |
+| **プロセス管理** | systemd (`todo.service`) |
+| **定期実行・自動化** | Linux cron（毎日 0:00 JST 自動リセット） |
 
-## 追加機能（URL）
+---
 
-### 公開アプリURL  
-  [ToDoリストアプリ](http://43.206.147.251:8080)
+## 🏗 インフラアーキテクチャ
 
-### GitHub Actions（自動削除ワークフロー）  
-  [.github/workflows/delete-tasks.yml](https://github.com/chibi50rilla/HandsOn-02_ver01/blob/main/.github/workflows/delete-old-tasks.yml)
+単一の AWS Lightsail サーバー上で、複数のポートフォリオアプリを安全かつ独立して稼働させるマルチテナント構成をとっています。
 
- ## 画面キャプチャ
- 
-<img width="397" height="464" alt="スクリーンショット 2026-01-30 174157" src="https://github.com/user-attachments/assets/c9d380ad-3185-4408-b8b6-f7892bd6a137" />
-<img width="382" height="459" alt="スクリーンショット 2026-01-30 174225" src="https://github.com/user-attachments/assets/082116e7-6135-404d-bd58-d89bbfe892d0" />
+```text
+ユーザー (HTTPS:443)
+       │
+       ▼
+[ DuckDNS / DNS解決 ]
+       │
+       ▼
+[ Nginx (リバースプロキシ / SSL終端) ]
+ ├─ todo-portfolio.duckdns.org    ──> http://localhost:8081 (TODOアプリ)
+ └─ 他ポートフォリオドメイン       ──> http://localhost:8080
+       │
+       ▼
+[ Spring Boot (Embedded Tomcat: 8081) ]
+       │
+       ▼
+[ H2 Database (./data/tododb) ]
+       ▲
+       │ (毎日 0:00 JST 自動初期化)
+[ Linux cron (`reset-todo.sh`) ]
+```
 
+## ⚙️ 自動リセットの仕組み
+外部 SaaS や CI/CD トリガーに依存せず、サーバー内で自己完結する高可用な定期リセット機構を構築しています。
+
+cron スケジューラ:
+
+サーバー（UTC）の 15:00（日本時間 JST 0:00）にリセットスクリプトを定期実行。
+
+リセットスクリプト (/usr/local/bin/reset-todo.sh):
+
+systemctl stop todo でアプリを安全に一時停止。
+
+保存されている H2 DB ファイルをクリーンアップ。
+
+systemctl start todo でサービスを再起動。
+
+初期データ再生成:
+
+Spring Boot 起動時に schema.sql および data.sql が自動適用され、初期タスク状態で翌日を迎えます。
+
+## 🔗 公開 URL
+公開サイト: https://todo-portfolio.duckdns.org/tasks
