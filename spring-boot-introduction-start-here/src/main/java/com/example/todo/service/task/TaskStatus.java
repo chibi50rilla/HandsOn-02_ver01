@@ -6,5 +6,11 @@ public enum TaskStatus {
 
     Doing,
 
-    Done
+    Done,
+
+    TODO,
+
+    DOING,
+
+    DONE
 }
